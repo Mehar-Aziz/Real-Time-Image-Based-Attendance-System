@@ -3,38 +3,32 @@ import pandas as pd
 import time
 from datetime import datetime
 from streamlit_autorefresh import st_autorefresh
-import os
 
-# Ensure the Attendance directory exists
-if not os.path.exists('Attendance'):
-    os.makedirs('Attendance')
-
-# Get current date and time for CSV file name
+# Get the current date to display today's attendance
 ts = time.time()
 date = datetime.fromtimestamp(ts).strftime("%d-%m-%Y")
-timeStamp = datetime.fromtimestamp(ts).strftime("%H-%M-%S")
 
-# Auto-refresh every 2 seconds
+# Auto-refresh to update the table every 2 seconds
 count = st_autorefresh(interval=2000, limit=100, key="fizzbuzzcounter")
 
-# Display FizzBuzz logic (just for demonstration)
-if count == 0:
-    st.write('Count is Zero')
-elif count % 3 == 0 and count % 5 == 0:
-    st.write('FizzBuzz')
-elif count % 3 == 0:
-    st.write('Fizz')
-elif count % 5 == 0:
-    st.write('Buzz')
-else:
-    st.write(f"Count: {count}")
-
-# Try reading the attendance CSV, create empty DataFrame if not found
+# Display the attendance data from the CSV
 try:
+    # Read the CSV file
     df = pd.read_csv(f'Attendance/Attendance_{date}.csv')
-except FileNotFoundError:
-    st.write("No attendance recorded for today yet.")
-    df = pd.DataFrame(columns=['NAME', 'TIME', 'STATUS'])  # Empty DataFrame with column names
+    
+    # Fill any missing times and statuses (for 'Absent')
+    df['TIME'] = df['TIME'].fillna('')
+    df['STATUS'] = df['STATUS'].fillna('Absent')
+    
+    # Filter to keep only the latest entry per person
+    df = df.drop_duplicates(subset=['NAME'])
+    
+    # Add a sequential index column for display
+    df.insert(0, 'No.', range(1, len(df) + 1))
 
-# Display the DataFrame in the app
-st.dataframe(df.style.highlight_max(axis=0))
+    # Display the filtered dataframe in Streamlit
+    st.write("### Today's Attendance")
+    st.dataframe(df.style.highlight_max(axis=0))
+
+except FileNotFoundError:
+    st.write("Attendance file for today not found. Please check if the system has started correctly.")
