@@ -43,7 +43,7 @@ if 'names.pkl' not in os.listdir('data/'):
 else:
     with open('data/names.pkl', 'rb') as f:
         names = pickle.load(f)
-    names= names+[names]*100
+    names= names+[name]*100
     with open('data/names.pkl', 'wb') as f:
         pickle.dump(names, f)
 
@@ -57,4 +57,4 @@ else:
         faces = pickle.load(f)
     faces= np.append(faces, faces_data, axis=0)
     with open('data/faces_data.pkl', 'wb') as f:
-        pickle.dump(names, f)
+        pickle.dump(faces, f)
