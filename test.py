@@ -15,7 +15,6 @@ def speak(str1):
 video = cv2.VideoCapture(0)
 facedetect = cv2.CascadeClassifier('data/haarcascade_frontalface_default.xml')
 
-# Load pre-trained names and face data
 with open('data/names.pkl', 'rb') as f:
     Labels = pickle.load(f)
 with open('data/faces_data.pkl', 'rb') as f:
@@ -28,7 +27,7 @@ imgBackground = cv2.imread('background.png')
 COL_NAMES = ['NAME', 'TIME', 'STATUS']
 attendance_file = f'Attendance/Attendance_{datetime.now().strftime("%d-%m-%Y")}.csv'
 
-# Dictionary to track last attendance times
+
 last_attendance_times = {}
 
 # Initialize attendance CSV if not exists
