@@ -70,8 +70,8 @@ while True:
                 with open(attendance_file, 'w', newline='') as csvfile:
                     csv.writer(csvfile).writerows(attendance_data)
 
-        #else:
-            #speak(f"{output}, you cannot mark attendance yet. Please wait.")
+        else:
+            speak(f"{output}, you cannot mark attendance yet. Please wait.")
 
         # Draw detected face rectangle
         cv2.rectangle(frame, (x, y), (x + w, y + h), (50, 50, 255), 2)
