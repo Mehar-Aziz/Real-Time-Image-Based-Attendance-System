@@ -1,10 +1,8 @@
 from sklearn.neighbors import KNeighborsClassifier
 import cv2
 import pickle
-import numpy as np
 import os
 import csv
-import time
 from datetime import datetime, timedelta
 from win32com.client import Dispatch
 
